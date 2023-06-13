@@ -1,37 +1,36 @@
-<!--  This file is app/views/movies/index.html.erb -->
+<!-- This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
-
 
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
       <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
-      <%= check_box_tag "ratings[#{rating}]", "1", @selected_ratings&.include?(rating), class: 'form-check-input' %>
+      <%= check_box_tag "ratings[#{rating}]", "1", @ratings_to_show_hash[rating], class: 'form-check-input' %>
     </div>
   <% end %>
   <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
 
-<%#  Part 2: Start here... %>
+<!-- Part 2: Start here... -->
 
 <table class="table table-striped col-md-12" id="movies">
-<thead>
-  <tr>
-    <th class="<%= column_header_class('title') %>">
-      <%= link_to movies_path(params.merge(sort: 'title', ratings: @selected_ratings)), id: 'title_header' do %>
-        <div class="header-content">Movie Title</div>
-      <% end %>
-    </th>
-    <th>Rating</th>
-    <th class="<%= column_header_class('release_date') %>">
-      <%= link_to movies_path(params.merge(sort: 'release_date', ratings: @selected_ratings)), id: 'release_date_header' do %>
-        <div class="header-content">Release Date</div>
-      <% end %>
-    </th>
-    <th>More Info</th>
-  </tr>
-</thead>
+  <thead>
+    <tr>
+      <th class="<%= column_header_class('title') %>">
+        <%= link_to movies_path(params.merge(sort: 'title', ratings: @selected_ratings)), id: 'title_header' do %>
+          <div class="header-content">Movie Title</div>
+        <% end %>
+      </th>
+      <th>Rating</th>
+      <th class="<%= column_header_class('release_date') %>">
+        <%= link_to movies_path(params.merge(sort: 'release_date', ratings: @selected_ratings)), id: 'release_date_header' do %>
+          <div class="header-content">Release Date</div>
+        <% end %>
+      </th>
+      <th>More Info</th>
+    </tr>
+  </thead>
 
   <tbody>
     <% @movies.each do |movie| %>
@@ -52,4 +51,5 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+
+<%= link_to 'Add new movie', new_movie_path, class: 'btn btn-primary' %>
