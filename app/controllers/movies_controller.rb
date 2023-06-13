@@ -14,24 +14,34 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-  
-    @selected_ratings = params[:ratings] || []
-  
+
+    @selected_ratings = params[:ratings] || session[:ratings] || []
+
     # Fetch movies based on selected ratings
     @movies = Movie.with_ratings(@selected_ratings)
-  
+
     # Create a hash to track which ratings should be checked
     @ratings_to_show_hash = Hash[@selected_ratings.map { |rating| [rating, true] }]
-  
-    @selected_column = params[:sort] # Store the selected column in an instance variable
-  
+
+    @selected_column = params[:sort] || session[:sort] # Store the selected column in an instance variable
+
     case @selected_column
     when 'title'
       @movies = @movies.order(title: :asc)
     when 'release_date'
       @movies = @movies.order(release_date: :asc)
     end
+
+    session[:sort] = @selected_column if @selected_column.present?
+    session[:ratings] = @selected_ratings if @selected_ratings.present?
+
+    if params[:sort].blank? && params[:ratings].blank?
+      @selected_column = session[:sort]
+      @selected_ratings = session[:ratings]
+      @selected_ratings = @selected_ratings if @selected_ratings.present?
+    end
   end
+
   
 
   def new
