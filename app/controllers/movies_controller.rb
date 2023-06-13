@@ -7,23 +7,24 @@ class MoviesController < ApplicationController
   end
   helper_method :column_header_class
   def column_header_class(column)
-    return 'hilite bg-warning' if column == @selected_column
+    return 'hilite' if column == @selected_column
+
     ''
   end
 
   def index
     @all_ratings = Movie.all_ratings
-
-    selected_ratings = params[:ratings] || []
-
+  
+    @selected_ratings = params[:ratings] || []
+  
     # Fetch movies based on selected ratings
-    @movies = Movie.with_ratings(selected_ratings)
-
+    @movies = Movie.with_ratings(@selected_ratings)
+  
     # Create a hash to track which ratings should be checked
-    @ratings_to_show_hash = Hash[selected_ratings.map { |rating| [rating, true] }]
-
+    @ratings_to_show_hash = Hash[@selected_ratings.map { |rating| [rating, true] }]
+  
     @selected_column = params[:sort] # Store the selected column in an instance variable
-
+  
     case @selected_column
     when 'title'
       @movies = @movies.order(title: :asc)
@@ -31,6 +32,7 @@ class MoviesController < ApplicationController
       @movies = @movies.order(release_date: :asc)
     end
   end
+  
 
   def new
     # default: render 'new' template

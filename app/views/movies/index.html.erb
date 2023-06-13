@@ -16,22 +16,22 @@
 <%#  Part 2: Start here... %>
 
 <table class="table table-striped col-md-12" id="movies">
-  <thead>
-    <tr>
-      <th class="<%= column_header_class('title') %>">
-        <%= link_to movies_path(params.merge(sort: 'title')), id: 'title_header' do %>
-          <div class="header-content">Movie Title</div>
-        <% end %>
-      </th>
-      <th>Rating</th>
-      <th class="<%= column_header_class('release_date') %>">
-        <%= link_to movies_path(params.merge(sort: 'release_date')), id: 'release_date_header' do %>
-          <div class="header-content">Release Date</div>
-        <% end %>
-      </th>
-      <th>More Info</th>
-    </tr>
-  </thead>
+<thead>
+  <tr>
+    <th class="<%= column_header_class('title') %>">
+      <%= link_to movies_path(params.merge(sort: 'title', ratings: @selected_ratings)), id: 'title_header' do %>
+        <div class="header-content">Movie Title</div>
+      <% end %>
+    </th>
+    <th>Rating</th>
+    <th class="<%= column_header_class('release_date') %>">
+      <%= link_to movies_path(params.merge(sort: 'release_date', ratings: @selected_ratings)), id: 'release_date_header' do %>
+        <div class="header-content">Release Date</div>
+      <% end %>
+    </th>
+    <th>More Info</th>
+  </tr>
+</thead>
 
   <tbody>
     <% @movies.each do |movie| %>
